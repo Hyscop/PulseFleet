@@ -1,1 +1,96 @@
+# =====================
+# INTELLIJ IDEA / IDE
+# =====================
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+*.sublime-*
+
+# =====================
+# JAVA / MAVEN
+# =====================
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+*.class
+*.jar
+*.war
+*.ear
+*.log
+hs_err_pid*
+replay_pid*
+
+# =====================
+# GRADLE (if used later)
+# =====================
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# =====================
+# NODE / REACT (Frontend)
+# =====================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+dist/
+.next/
+out/
+.nuxt/
+.cache/
+.parcel-cache/
+
+# =====================
+# ENVIRONMENT & SECRETS
+# =====================
+.env
+.env.local
+.env.*.local
+*.env
+application-local.properties
+application-local.yml
+**/secrets/
+*.pem
+*.key
+
+# =====================
+# OS FILES
+# =====================
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# =====================
+# DOCKER
+# =====================
+docker-compose.override.yml
+
+# =====================
+# TESTING & COVERAGE
+# =====================
+coverage/
+*.lcov
+.nyc_output/
+jacoco.exec
+surefire-reports/
+
+# =====================
+# MISC
+# =====================
+*.tmp
+*.temp
+*.swp
+*~
+.project
+.classpath
+.settings/
+
+# =====================
+# PROJECT SPECIFIC
+# =====================
 MENTOR_AGENT_SPEC.md
