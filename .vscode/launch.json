@@ -1,0 +1,14 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-DeviceRegistryApplication<device-registry>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.pulsefleet.device_registry.DeviceRegistryApplication",
+      "projectName": "device-registry",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}

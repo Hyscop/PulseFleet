@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.pulsefleet.device_registry.DeviceRegistryApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.340 s -- in com.pulsefleet.device_registry.DeviceRegistryApplicationTests
