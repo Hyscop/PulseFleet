@@ -1,0 +1,8 @@
+# Yöntem 1: Single quote dışta, double quote içte
+//curl -X POST http://localhost:8081/api/devices -H "Content-Type: application/json" -d '{"name": "Temperature Sensor 02"}'  c9322c99-8b83-4b79-86c9-171ba9691374
+
+//curl http://localhost:8081/api/devices
+
+//curl http://localhost:8081/api/devices/c9322c99-8b83-4b79-86c9-171ba9691374
+
+curl -X POST http://localhost:8081/api/devices/c9322c99-8b83-4b79-86c9-171ba9691374/activate

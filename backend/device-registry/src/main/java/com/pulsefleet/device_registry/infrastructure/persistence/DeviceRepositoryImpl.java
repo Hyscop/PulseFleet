@@ -3,13 +3,14 @@ package com.pulsefleet.device_registry.infrastructure.persistence;
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.logging.log4j.message.ReusableMessage;
+import org.springframework.stereotype.Repository;
 
 import com.pulsefleet.device_registry.domain.model.Device;
 import com.pulsefleet.device_registry.domain.model.DeviceId;
 import com.pulsefleet.device_registry.domain.model.DeviceStatus;
 import com.pulsefleet.device_registry.domain.repository.DeviceRepository;
 
+@Repository
 public class DeviceRepositoryImpl implements DeviceRepository {
 
     private final JpaDeviceRepository jpaRepository;
