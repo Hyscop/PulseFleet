@@ -4,12 +4,14 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pulsefleet.device_registry.domain.model.Device;
 import com.pulsefleet.device_registry.domain.model.DeviceId;
 import com.pulsefleet.device_registry.domain.repository.DeviceRepository;
 
 @Service
+@Transactional
 public class DeviceService {
 
     private final DeviceRepository deviceRepository;

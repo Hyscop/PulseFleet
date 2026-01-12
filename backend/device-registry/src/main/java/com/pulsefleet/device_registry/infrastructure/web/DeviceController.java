@@ -59,4 +59,8 @@ public class DeviceController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @org.springframework.web.bind.annotation.ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<Void> handleIllegalArgument(IllegalArgumentException ex) {
+        return ResponseEntity.notFound().build();
+    }
 }
