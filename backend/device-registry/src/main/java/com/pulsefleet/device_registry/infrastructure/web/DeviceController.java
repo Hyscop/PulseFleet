@@ -28,7 +28,7 @@ public class DeviceController {
     }
 
     @PostMapping
-    public ResponseEntity<DeviceResponse> createDevicEntity(@RequestBody CreateDeviceRequest request) {
+    public ResponseEntity<DeviceResponse> createDeviceEntity(@RequestBody CreateDeviceRequest request) {
         Device device = deviceService.registeredDevice(request.getName());
         return ResponseEntity.status(HttpStatus.CREATED).body(DeviceResponse.from(device));
     }
@@ -47,7 +47,7 @@ public class DeviceController {
     }
 
     @PostMapping("/{id}/activate")
-    public ResponseEntity<DeviceResponse> activateDevic(@PathVariable String id) {
+    public ResponseEntity<DeviceResponse> activateDevice(@PathVariable String id) {
         return deviceService.activateDevice(id).map(device -> ResponseEntity.ok(DeviceResponse.from(device)))
                 .orElse(ResponseEntity.notFound().build());
     }
