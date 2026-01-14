@@ -7,6 +7,7 @@ import {
   deactivateDevice,
   deleteDevice,
 } from "../api/deviceApi";
+import { TelemetryChart } from "./TelemetryChart";
 
 export function DeviceDetail() {
   const { id } = useParams<{ id: string }>();
@@ -138,6 +139,7 @@ export function DeviceDetail() {
           </div>
         </div>
       </div>
+      {device.status === "ACTIVATED" && <TelemetryChart deviceId={device.id} />}
     </div>
   );
 }
