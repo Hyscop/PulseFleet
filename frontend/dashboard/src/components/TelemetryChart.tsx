@@ -23,23 +23,30 @@ export function TelemetryChart({ deviceId }: Props) {
 
   useEffect(() => {
     let cancelled = false;
-    fetchTelemetry(deviceId)
-      .then((telemetry) => {
-        if (!cancelled) setData(telemetry);
-      })
-      .catch((err) => {
-        if (!cancelled) {
-          setError(err.message);
-        }
-      })
-      .finally(() => {
-        if (!cancelled) {
-          setLoading(false);
-        }
-      });
+    const loadTelemetry = () => {
+      fetchTelemetry(deviceId)
+        .then((telemetry) => {
+          if (!cancelled) setData(telemetry);
+        })
+        .catch((err) => {
+          if (!cancelled) {
+            setError(err.message);
+          }
+        })
+        .finally(() => {
+          if (!cancelled) {
+            setLoading(false);
+          }
+        });
+    };
+
+    loadTelemetry();
+
+    const interval = setInterval(loadTelemetry, 10000);
 
     return () => {
       cancelled = true;
+      clearInterval(interval);
     };
   }, [deviceId]);
 
