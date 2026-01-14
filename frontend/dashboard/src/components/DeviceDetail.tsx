@@ -1,13 +1,19 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import type { Device } from "../types/Device";
-import { fetchDevice } from "../api/deviceApi";
+import {
+  fetchDevice,
+  activateDevice,
+  deactivateDevice,
+  deleteDevice,
+} from "../api/deviceApi";
 
 export function DeviceDetail() {
   const { id } = useParams<{ id: string }>();
   const [device, setDevice] = useState<Device | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!id) return;
@@ -29,6 +35,41 @@ export function DeviceDetail() {
       cancelled = true;
     };
   }, [id]);
+
+  const handleActivate = async () => {
+    if (!id) return;
+    try {
+      const updated = await activateDevice(id);
+      setDevice(updated);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to activate");
+    }
+  };
+
+  const handleDeactivate = async () => {
+    if (!id) return;
+    try {
+      const updated = await deactivateDevice(id);
+      setDevice(updated);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to deactivate");
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!id) {
+      return;
+    }
+    if (!confirm("Are you sure you want to delete this device")) {
+      return;
+    }
+    try {
+      await deleteDevice(id);
+      navigate("/");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to delete");
+    }
+  };
 
   if (loading) return <div className="p-4">Loading...</div>;
   if (error) return <div className="p-4 text-red-500">Error: {error}</div>;
@@ -70,6 +111,30 @@ export function DeviceDetail() {
           <div>
             <p className="text-gray-500 text-sm">Last Modified</p>
             <p>{new Date(device.lastModifiedAt).toLocaleString()}</p>
+          </div>
+          <div className="mt-6 flex gap-4">
+            {device.status !== "ACTIVATED" && (
+              <button
+                onClick={handleActivate}
+                className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+              >
+                Activate
+              </button>
+            )}
+            {device.status === "ACTIVATED" && (
+              <button
+                onClick={handleDeactivate}
+                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+              >
+                Deactivate
+              </button>
+            )}
+            <button
+              onClick={handleDelete}
+              className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+            >
+              Delete
+            </button>
           </div>
         </div>
       </div>

@@ -2,6 +2,7 @@ package com.pulsefleet.device_registry.application;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,5 +63,19 @@ public class DeviceService {
         }
 
         return Optional.empty();
+    }
+
+    public boolean deleteDevice(String id) {
+        try {
+            DeviceId deviceId = new DeviceId(UUID.fromString(id));
+            return deviceRepository.findById(deviceId)
+                    .map(device -> {
+                        deviceRepository.delete(deviceId);
+                        return true;
+                    })
+                    .orElse(false);
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
     }
 }

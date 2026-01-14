@@ -29,3 +29,37 @@ export async function fetchDevice(id: string): Promise<Device> {
   }
   return response.json();
 }
+
+export async function activateDevice(id: string): Promise<Device> {
+  const response = await fetch(`${API_BASE}/devices/${id}/activate`, {
+    method: "post",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to activate device");
+  }
+
+  return response.json();
+}
+
+export async function deactivateDevice(id: string): Promise<Device> {
+  const response = await fetch(`${API_BASE}/devices/${id}/deactivate`, {
+    method: "post",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to deactivate device");
+  }
+
+  return response.json();
+}
+
+export async function deleteDevice(id: string): Promise<void> {
+  const response = await fetch(`${API_BASE}/devices/${id}`, {
+    method: "DELETE",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to delete device");
+  }
+}
