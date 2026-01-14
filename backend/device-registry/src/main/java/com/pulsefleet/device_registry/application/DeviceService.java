@@ -78,4 +78,16 @@ public class DeviceService {
             return false;
         }
     }
+
+    public Optional<Device> renameDevice(String id, String newName) {
+        try {
+            DeviceId deviceId = new DeviceId(UUID.fromString(id));
+            return deviceRepository.findById(deviceId).map(device -> {
+                device.rename(newName);
+                return deviceRepository.save(device);
+            });
+        } catch (IllegalArgumentException e) {
+            return Optional.empty();
+        }
+    }
 }

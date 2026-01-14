@@ -3,6 +3,7 @@ import type { Device } from "../types/Device";
 import { fetchDevices } from "../api/deviceApi";
 import { AddDeviceForm } from "./AddDeviceForm";
 import { Link } from "react-router-dom";
+import { DashboardStats } from "./DashboardStats";
 
 export function DeviceList() {
   const [devices, setDevices] = useState<Device[]>([]);
@@ -45,6 +46,8 @@ export function DeviceList() {
   return (
     <div className="p-4">
       <AddDeviceForm onDeviceAdded={handleDeviceAdded} />
+      <DashboardStats devices={devices} />
+
       <h1 className="text-2xl font-bold mb-4">Devices</h1>
       <div className="grid gap-4">
         {devices.map((device) => (

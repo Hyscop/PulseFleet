@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
@@ -64,6 +65,14 @@ public class DeviceController {
     public ResponseEntity<Void> deleteDevice(@PathVariable String id) {
         boolean deleted = deviceService.deleteDevice(id);
         return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<DeviceResponse> renameDevice(@PathVariable String id,
+            @RequestBody CreateDeviceRequest request) {
+        return deviceService.renameDevice(id, request.getName())
+                .map(device -> ResponseEntity.ok(DeviceResponse.from(device)))
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @org.springframework.web.bind.annotation.ExceptionHandler(IllegalArgumentException.class)

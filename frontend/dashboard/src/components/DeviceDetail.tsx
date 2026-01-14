@@ -6,6 +6,7 @@ import {
   activateDevice,
   deactivateDevice,
   deleteDevice,
+  renameDevice,
 } from "../api/deviceApi";
 import { TelemetryChart } from "./TelemetryChart";
 
@@ -15,6 +16,8 @@ export function DeviceDetail() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const [editing, setEditing] = useState(false);
+  const [newName, setNewName] = useState("");
 
   useEffect(() => {
     if (!id) return;
@@ -72,6 +75,24 @@ export function DeviceDetail() {
     }
   };
 
+  const handleRename = async () => {
+    if (!id || !newName.trim()) {
+      return;
+    }
+    try {
+      const updated = await renameDevice(id, newName);
+      setDevice(updated);
+      setEditing(false);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to rename");
+    }
+  };
+
+  const startEditing = async () => {
+    setNewName(device?.name || "");
+    setEditing(true);
+  };
+
   if (loading) return <div className="p-4">Loading...</div>;
   if (error) return <div className="p-4 text-red-500">Error: {error}</div>;
   if (!device) return <div className="p-4">Device not found</div>;
@@ -83,7 +104,38 @@ export function DeviceDetail() {
       </Link>
 
       <div className="bg-white rounded-lg shadow-sm p-6">
-        <h1 className="text-2x-1 font-bold mb-4">{device.name}</h1>
+        {editing ? (
+          <div className="flex gap-2 mb-4">
+            <input
+              type="text"
+              value={newName}
+              onChange={(e) => setNewName(e.target.value)}
+              className="border rounded px-3 py-2 flex-1"
+            />
+            <button
+              onClick={handleRename}
+              className="bg-blue-500 text-white px-4 py-2 rounded"
+            >
+              Save
+            </button>
+            <button
+              onClick={() => setEditing(false)}
+              className="bg-gray-300 px-4 py-2 rounded"
+            >
+              Cancel
+            </button>
+          </div>
+        ) : (
+          <div className="flex items-center gap-2 mb-4">
+            <h1 className="text-2xl font-bold">{device.name}</h1>
+            <button
+              onClick={startEditing}
+              className="text-blue-500 hover:underline text-sm"
+            >
+              Edit
+            </button>
+          </div>
+        )}
         <div className="grid grid-cols-2 gap-4">
           <div>
             <p className="text-gray-500 text-sm">Status</p>

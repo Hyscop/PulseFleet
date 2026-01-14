@@ -63,3 +63,15 @@ export async function deleteDevice(id: string): Promise<void> {
     throw new Error("Failed to delete device");
   }
 }
+
+export async function renameDevice(id: string, name: string): Promise<Device> {
+  const response = await fetch(`${API_BASE}/devices/${id}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name }),
+  });
+  if (!response.ok) {
+    throw new Error("Failed to rename device");
+  }
+  return response.json();
+}

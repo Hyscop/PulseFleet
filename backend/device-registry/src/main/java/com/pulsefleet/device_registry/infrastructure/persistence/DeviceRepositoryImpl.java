@@ -19,6 +19,7 @@ public class DeviceRepositoryImpl implements DeviceRepository {
         this.jpaRepository = jpaRepository;
     }
 
+    @SuppressWarnings("null")
     @Override
     public Device save(Device device) {
         DeviceEntity entity = toEntity(device);
@@ -26,6 +27,7 @@ public class DeviceRepositoryImpl implements DeviceRepository {
         return device;
     }
 
+    @SuppressWarnings("null")
     @Override
     public Optional<Device> findById(DeviceId deviceId) {
         return jpaRepository.findById(deviceId.getValue()).map(this::toDomain);
@@ -36,11 +38,13 @@ public class DeviceRepositoryImpl implements DeviceRepository {
         return jpaRepository.findAll().stream().map(this::toDomain).toList();
     }
 
+    @SuppressWarnings("null")
     @Override
     public void delete(DeviceId deviceId) {
         jpaRepository.deleteById(deviceId.getValue());
     }
 
+    @SuppressWarnings("null")
     @Override
     public boolean exists(DeviceId deviceId) {
         return jpaRepository.existsById(deviceId.getValue());
