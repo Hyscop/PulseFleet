@@ -30,6 +30,7 @@
     <modules>
         <module>device-registry</module>
         <module>telemetry-ingest</module>
+        <module>command-service</module>
     </modules>
 
     <dependencyManagement>

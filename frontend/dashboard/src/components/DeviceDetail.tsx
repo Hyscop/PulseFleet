@@ -9,6 +9,7 @@ import {
   renameDevice,
 } from "../api/deviceApi";
 import { TelemetryChart } from "./TelemetryChart";
+import { CommandPanel } from "./CommandPanel";
 
 export function DeviceDetail() {
   const { id } = useParams<{ id: string }>();
@@ -192,6 +193,7 @@ export function DeviceDetail() {
         </div>
       </div>
       {device.status === "ACTIVATED" && <TelemetryChart deviceId={device.id} />}
+      {device.status === "ACTIVATED" && <CommandPanel deviceId={device.id} />}
     </div>
   );
 }
