@@ -1,4 +1,4 @@
-const API_BASE = "http://localhost:8083/api";
+const API_BASE = "http://localhost:8080";
 
 export interface CommandRequest {
   deviceId: string;
@@ -20,7 +20,7 @@ export interface CommandResponse {
 export async function sendCommand(
   request: CommandRequest
 ): Promise<CommandResponse> {
-  const response = await fetch(`${API_BASE}/commands`, {
+  const response = await fetch(`${API_BASE}/api/commands`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(request),
@@ -34,7 +34,7 @@ export async function sendCommand(
 export async function getCommandsByDevice(
   deviceId: string
 ): Promise<CommandResponse[]> {
-  const response = await fetch(`${API_BASE}/commands/device/${deviceId}`);
+  const response = await fetch(`${API_BASE}/api/commands/device/${deviceId}`);
   if (!response.ok) {
     throw new Error("Failed to fetch commands");
   }

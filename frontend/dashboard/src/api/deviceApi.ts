@@ -1,9 +1,9 @@
 import type { Device } from "../types/Device";
 
-const API_BASE = "http://localhost:8081/api";
+const API_BASE = "http://localhost:8080";
 
 export async function fetchDevices(): Promise<Device[]> {
-  const response = await fetch(`${API_BASE}/devices`);
+  const response = await fetch(`${API_BASE}/api/devices`);
   if (!response.ok) {
     throw new Error("Failed to fetch devices");
   }
@@ -11,7 +11,7 @@ export async function fetchDevices(): Promise<Device[]> {
 }
 
 export async function createDevice(name: string): Promise<Device> {
-  const response = await fetch(`${API_BASE}/devices`, {
+  const response = await fetch(`${API_BASE}/api/devices`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ name }),
@@ -23,16 +23,16 @@ export async function createDevice(name: string): Promise<Device> {
 }
 
 export async function fetchDevice(id: string): Promise<Device> {
-  const response = await fetch(`${API_BASE}/devices/${id}`);
+  const response = await fetch(`${API_BASE}/api/devices/${id}`);
   if (!response.ok) {
-    throw new Error("Device not founnd");
+    throw new Error("Device not found");
   }
   return response.json();
 }
 
 export async function activateDevice(id: string): Promise<Device> {
-  const response = await fetch(`${API_BASE}/devices/${id}/activate`, {
-    method: "post",
+  const response = await fetch(`${API_BASE}/api/devices/${id}/activate`, {
+    method: "POST",
   });
 
   if (!response.ok) {
@@ -43,8 +43,8 @@ export async function activateDevice(id: string): Promise<Device> {
 }
 
 export async function deactivateDevice(id: string): Promise<Device> {
-  const response = await fetch(`${API_BASE}/devices/${id}/deactivate`, {
-    method: "post",
+  const response = await fetch(`${API_BASE}/api/devices/${id}/deactivate`, {
+    method: "POST",
   });
 
   if (!response.ok) {
@@ -55,7 +55,7 @@ export async function deactivateDevice(id: string): Promise<Device> {
 }
 
 export async function deleteDevice(id: string): Promise<void> {
-  const response = await fetch(`${API_BASE}/devices/${id}`, {
+  const response = await fetch(`${API_BASE}/api/devices/${id}`, {
     method: "DELETE",
   });
 
@@ -65,7 +65,7 @@ export async function deleteDevice(id: string): Promise<void> {
 }
 
 export async function renameDevice(id: string, name: string): Promise<Device> {
-  const response = await fetch(`${API_BASE}/devices/${id}`, {
+  const response = await fetch(`${API_BASE}/api/devices/${id}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ name }),

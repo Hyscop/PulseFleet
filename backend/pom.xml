@@ -28,9 +28,11 @@
     </properties>
 
     <modules>
+        <module>api-gateway</module>
         <module>device-registry</module>
         <module>telemetry-ingest</module>
         <module>command-service</module>
+        
     </modules>
 
     <dependencyManagement>
@@ -50,7 +52,16 @@
                 <version>${testcontainers.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>       
+            </dependency>  
+
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>2025.0.0</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 

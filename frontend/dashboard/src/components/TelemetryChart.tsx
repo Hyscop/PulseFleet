@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import {
   LineChart,
   Line,
@@ -11,6 +11,7 @@ import {
 } from "recharts";
 import type { Telemetry } from "../types/Telemetry";
 import { fetchTelemetry } from "../api/telemetryApi";
+import { useMqtt } from "../hooks/useMqtt";
 
 interface Props {
   deviceId: string;
@@ -21,32 +22,61 @@ export function TelemetryChart({ deviceId }: Props) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const handleMessage = useCallback(
+    (message: string) => {
+      try {
+        console.log("MQTT Message received:", message);
+        const payload = JSON.parse(message);
+        const newPoint: Telemetry = {
+          deviceId,
+          temperature: Number(payload.temp),
+          battery: Number(payload.battery),
+          receivedAt: new Date().toISOString(),
+        };
+
+        console.log("Parsed point:", newPoint);
+
+        setData((prev) => {
+          const updated = [...prev, newPoint];
+          return updated.slice(-50);
+        });
+      } catch (e) {
+        console.error("Failed to parse MQTT message", e);
+      }
+    },
+    [deviceId],
+  );
+
+  useMqtt(`devices/${deviceId}/telemetry`, handleMessage);
+
   useEffect(() => {
     let cancelled = false;
-    const loadTelemetry = () => {
-      fetchTelemetry(deviceId)
-        .then((telemetry) => {
-          if (!cancelled) setData(telemetry);
-        })
-        .catch((err) => {
-          if (!cancelled) {
-            setError(err.message);
-          }
-        })
-        .finally(() => {
-          if (!cancelled) {
-            setLoading(false);
-          }
-        });
-    };
 
-    loadTelemetry();
-
-    const interval = setInterval(loadTelemetry, 10000);
+    fetchTelemetry(deviceId)
+      .then((telemetry) => {
+        console.log("Fetched historical telemetry:", telemetry);
+        if (!cancelled) {
+          const sorted = telemetry.sort(
+            (a, b) =>
+              new Date(a.receivedAt).getTime() -
+              new Date(b.receivedAt).getTime(),
+          );
+          setData(sorted.slice(-50));
+        }
+      })
+      .catch((err) => {
+        if (!cancelled) {
+          setError(err.message);
+        }
+      })
+      .finally(() => {
+        if (!cancelled) {
+          setLoading(false);
+        }
+      });
 
     return () => {
       cancelled = true;
-      clearInterval(interval);
     };
   }, [deviceId]);
 
@@ -64,8 +94,14 @@ export function TelemetryChart({ deviceId }: Props) {
 
   const chartData = data.map((t) => ({
     time: new Date(t.receivedAt).toLocaleTimeString(),
-    temperature: t.temperature,
-    battery: t.battery,
+    temperature:
+      typeof t.temperature === "string"
+        ? Number((t.temperature as string).replace(",", "."))
+        : Number(t.temperature),
+    battery:
+      typeof t.battery === "string"
+        ? Number((t.battery as string).replace(",", "."))
+        : Number(t.battery),
   }));
 
   return (
